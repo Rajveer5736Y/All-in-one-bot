@@ -107,7 +107,24 @@ class TitanBot extends Client {
       process.exit(1);
     }
   }
+  
+  async loadPrloadPrefixCommands   const fs = await import('fs');
+    const path = await import('path');
 
+    const commandsPath = path.join(process.cwd(), 'src/prefixCommands');
+
+    if (!fs.existsSync(commandsPath)) return;
+
+    const commandFiles = fs
+      .readdirSync(commandsPath)
+      .filter(file => file.endsWith('.js'));
+
+    for (const file of commandFiles) {
+      const command = await import(`./prefixCommands/${file}`);
+
+      this.prefixCommands.set(command.default.name, command.default);
+    }
+  }
   startWebServer() {
     const app = express();
     const configuredPort = Number(this.config.api?.port || process.env.PORT || 3000);
