@@ -268,56 +268,56 @@ class TitanBot extends Client {
 
       const command = this.commands.get(commandName);
 
-      commandmmandyyy (!command) return;
+      if (!command) return;
 
-try {
-  const fakeInteraction = {
-    reply: async (data) => {
-      if (typeof data === 'string') {
-        return await message.reply(data);
-      }
+      try {
+        const fakeInteraction = {
+          reply: async (data) => {
+            if (typeof data === 'string') {
+              return await message.reply(data);
+            }
 
-      return await message.reply(data);
-    },
+            return await message.reply(data);
+          },
 
-    deferReply: async () => {},
+          deferReply: async () => {},
 
-    editReply: async (data) => {
-      return await message.reply(data);
-    },
+          editReply: async (data) => {
+            return await message.reply(data);
+          },
 
-    followUp: async (data) => {
-      return await message.reply(data);
-    },
+          followUp: async (data) => {
+            return await message.reply(data);
+          },
 
-    options: {
-      getString: (name) => args.join(' '),
-      getInteger: () => null,
-      getBoolean: () => null,
-      getUser: () => message.mentions.users.first(),
-      getMember: () => message.mentions.members.first(),
-      getChannel: () => message.mentions.channels.first(),
-      getRole: () => message.mentions.roles.first(),
-      getAttachment: () => null,
-      getNumber: () => null,
-      getSubcommand: () => null,
-    },
+          options: {
+            getString: (name) => args.join(' '),
+            getInteger: () => null,
+            getBoolean: () => null,
+            getUser: () => message.mentions.users.first(),
+            getMember: () => message.mentions.members.first(),
+            getChannel: () => message.mentions.channels.first(),
+            getRole: () => message.mentions.roles.first(),
+            getAttachment: () => null,
+            getNumber: () => null,
+            getSubcommand: () => null,
+          },
 
-    member: message.member,
-    guild: message.guild,
-    channel: message.channel,
-    user: message.author,
+          member: message.member,
+          guild: message.guild,
+          channel: message.channel,
+          user: message.author,
 
-    client: this,
-  };
+          client: this,
+        };
 
-  await command.execute(fakeInteraction, this);
+        await command.execute(fakeInteraction, this);
 
-} catch (error) {
-  console.error(error);
+      } catch (error) {
+        console.error(error);
 
-  await message.reply('Error executing command.');
-      }
+        await message.reply('Error executing command.');
+            }
     });
   }
 
