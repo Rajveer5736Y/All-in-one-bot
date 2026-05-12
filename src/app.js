@@ -276,44 +276,65 @@ class TitanBot extends Client {
 
       try {
         const fakeInteraction = {
-          reply: async (data) => {
-            if (typeof data === 'string') {
-              return await message.reply(data);
-            }
+        user: message.author,
+        member: message.member,
+        guild: message.guild,
+        channel: message.channel,
+        client: this,
 
+        deferred: false,
+        replied: false,
+
+        commandName,
+
+        options: {
+          getString: () => args.join(' '),
+          getInteger: () => null,
+          getBoolean: () => null,
+          getUser: () => message.mentions.users.first(),
+          getMember: () => message.mentions.members.first(),
+          getChannel: () => message.mentions.channels.first(),
+          getRole: () => message.mentions.roles.first(),
+          getAttachment: () => null,
+          getNumber: () => null,
+          getSubcommand: () => null,
+        },
+
+        async reply(data) {
+          this.replied = true;
+          return await message.reply(data);
+        },
+
+        async deferReply() {
+          this.deferred = true;
+          return;
+        },
+
+        async editReply(data) {
+          if (!this.replied) {
+            this.replied = true;
             return await message.reply(data);
-          },
+          }
 
-          deferReply: async () => {},
+          return await message.channel.send(data);
+        },
 
-          editReply: async (data) => {
-            return await message.reply(data);
-          },
+        async followUp(data) {
+          return await message.channel.send(data);
+        },
 
-          followUp: async (data) => {
-            return await message.reply(data);
-          },
+        async safeReply(data) {
+          return await this.reply(data);
+        },
 
-          options: {
-            getString: (name) => args.join(' '),
-            getInteger: () => null,
-            getBoolean: () => null,
-            getUser: () => message.mentions.users.first(),
-            getMember: () => message.mentions.members.first(),
-            getChannel: () => message.mentions.channels.first(),
-            getRole: () => message.mentions.roles.first(),
-            getAttachment: () => null,
-            getNumber: () => null,
-            getSubcommand: () => null,
-          },
+        async safeDefer() {
+          return await this.deferReply();
+        },
 
-          member: message.member,
-          guild: message.guild,
-          channel: message.channel,
-          user: message.author,
-
-          client: this,
-        };
+        async safeEditReply(data) {
+          return await this.editReply(data);
+        },
+      };
         console.log(command);
         await command.execute(fakeInteraction, this);
 
