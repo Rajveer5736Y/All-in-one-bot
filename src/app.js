@@ -266,7 +266,11 @@ class TitanBot extends Client {
 
       const commandName = args.shift().toLowerCase();
 
-      const command = this.commands.get(commandName);
+      const command = [...this.commands.values()].find(
+        cmd => cmd.data?.name === commandName
+      );
+      console.log("Prefix command:", commandName);
+      console.log("Found:", command?.data?.name);
 
       if (!command) return;
 
@@ -310,7 +314,7 @@ class TitanBot extends Client {
 
           client: this,
         };
-
+        console.log(command);
         await command.execute(fakeInteraction, this);
 
       } catch (error) {
