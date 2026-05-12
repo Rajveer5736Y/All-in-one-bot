@@ -109,7 +109,7 @@ class TitanBot extends Client {
     }
   }
   
-  async loadPrloadPrefixCommands() {
+  async loadPrefixCommands() {
     const path = await import('path');
 
     const commandsPath = path.join(process.cwd(), 'src/prefixCommands');
