@@ -35,6 +35,7 @@ class TitanBot extends Client {
 
     this.config = config;
     this.commands = new Collection();
+    this.prefixCommands = new Collection();
     this.events = new Collection();
     this.buttons = new Collection();
     this.selectMenus = new Collection();
