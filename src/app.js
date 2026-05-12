@@ -372,8 +372,13 @@ class TitanBot extends Client {
         },
       };
         console.log(command);
-        await command.execute(fakeInteraction, this);
-
+        if (command.data) {
+          // Slash command
+          await command.execute(fakeInteraction, this);
+        } else {
+          // Prefix command
+          await command.execute(message, args, this);
+              }
       } catch (error) {
         console.error(error);
 
