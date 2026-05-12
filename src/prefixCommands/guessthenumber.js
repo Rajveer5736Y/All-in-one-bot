@@ -48,7 +48,7 @@ export default {
 
     const collector = channel.createMessageCollector({
       filter,
-      time: 300000, // 5 minutes
+      time: 1200000, // 5 minutes
     });
 
     collector.on('collect', async (msg) => {
