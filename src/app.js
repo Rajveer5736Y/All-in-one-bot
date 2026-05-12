@@ -276,16 +276,25 @@ class TitanBot extends Client {
 
       try {
         const fakeInteraction = {
+        id: message.id,
+        applicationId: this.user.id,
+
         user: message.author,
         member: message.member,
         guild: message.guild,
         channel: message.channel,
         client: this,
 
+        createdTimestamp: Date.now(),
+
         deferred: false,
         replied: false,
+        ephemeral: false,
 
         commandName,
+
+        isChatInputCommand: () => true,
+        isRepliable: () => true,
 
         options: {
           getString: () => args.join(' '),
@@ -298,29 +307,56 @@ class TitanBot extends Client {
           getAttachment: () => null,
           getNumber: () => null,
           getSubcommand: () => null,
+          getFocused: () => null,
         },
 
         async reply(data) {
           this.replied = true;
-          return await message.reply(data);
+
+          return await message.reply(
+            typeof data === 'string'
+              ? { content: data }
+              : data
+          );
         },
 
         async deferReply() {
           this.deferred = true;
-          return;
+          return Promise.resolve();
         },
 
         async editReply(data) {
           if (!this.replied) {
             this.replied = true;
-            return await message.reply(data);
+
+            return await message.reply(
+              typeof data === 'string'
+                ? { content: data }
+                : data
+            );
           }
 
-          return await message.channel.send(data);
+          return await message.channel.send(
+            typeof data === 'string'
+              ? { content: data }
+              : data
+          );
         },
 
         async followUp(data) {
-          return await message.channel.send(data);
+          return await message.channel.send(
+            typeof data === 'string'
+              ? { content: data }
+              : data
+          );
+        },
+
+        async fetchReply() {
+          return null;
+        },
+
+        async deleteReply() {
+          return null;
         },
 
         async safeReply(data) {
