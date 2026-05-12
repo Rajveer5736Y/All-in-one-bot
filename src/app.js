@@ -76,6 +76,10 @@ class TitanBot extends Client {
       startupLog('Loading commands...');
       await loadCommands(this);
       startupLog(`Commands loaded: ${this.commands.size}`);
+
+      startupLog('Loading prefix commands...');
+      await this.loadPrefixCommands();
+      startupLog(`Prefix commands loaded: ${this.prefixCommands.size}`);
       
       startupLog('Loading handlers...');
       await this.loadHandlers();
