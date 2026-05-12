@@ -248,6 +248,35 @@ class TitanBot extends Client {
 
     startServer(configuredPort, 0);
   }
+  
+  setupPrefixCommands() {
+    this.on('messageCreate', async (message) => {
+      if (message.author.bot) return;
+
+      const prefix = '!';
+
+      if (!message.content.startsWith(prefix)) return;
+
+      const args = message.content
+        .slice(prefix.length)
+        .trim()
+        .split(/ +/);
+
+      const commandName = args.shift().toLowerCase();
+
+      const command = this.prefixCommands.get(commandName);
+
+      if (!command) return;
+
+      try {
+        await command.execute(message, args, this);
+      } catch (error) {
+        console.error(error);
+
+        await message.reply('Error executing command.');
+      }
+    });
+  }
 
   setupCronJobs() {
     cron.schedule('0 6 * * *', () => checkBirthdays(this));
