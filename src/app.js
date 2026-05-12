@@ -266,16 +266,57 @@ class TitanBot extends Client {
 
       const commandName = args.shift().toLowerCase();
 
-      const command = this.prefixCommands.get(commandName);
+      const command = this.commands.get(commandName);
 
-      if (!command) return;
+      commandmmandyyy (!command) return;
 
-      try {
-        await command.execute(message, args, this);
-      } catch (error) {
-        console.error(error);
+try {
+  const fakeInteraction = {
+    reply: async (data) => {
+      if (typeof data === 'string') {
+        return await message.reply(data);
+      }
 
-        await message.reply('Error executing command.');
+      return await message.reply(data);
+    },
+
+    deferReply: async () => {},
+
+    editReply: async (data) => {
+      return await message.reply(data);
+    },
+
+    followUp: async (data) => {
+      return await message.reply(data);
+    },
+
+    options: {
+      getString: (name) => args.join(' '),
+      getInteger: () => null,
+      getBoolean: () => null,
+      getUser: () => message.mentions.users.first(),
+      getMember: () => message.mentions.members.first(),
+      getChannel: () => message.mentions.channels.first(),
+      getRole: () => message.mentions.roles.first(),
+      getAttachment: () => null,
+      getNumber: () => null,
+      getSubcommand: () => null,
+    },
+
+    member: message.member,
+    guild: message.guild,
+    channel: message.channel,
+    user: message.author,
+
+    client: this,
+  };
+
+  await command.execute(fakeInteraction, this);
+
+} catch (error) {
+  console.error(error);
+
+  await message.reply('Error executing command.');
       }
     });
   }
