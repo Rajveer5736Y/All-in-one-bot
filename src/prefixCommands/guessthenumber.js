@@ -28,7 +28,7 @@ export default {
          const dmChannel = await message.author.createDM();
 
          await dmChannel.send(
-             `🎯 The chosen number is: ${chosenNumber}`
+             `🎯 The chosen number is: ${winningNumber}`
         );
     } catch (err) {
          console.error(err);
