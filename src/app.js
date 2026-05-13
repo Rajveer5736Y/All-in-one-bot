@@ -380,9 +380,9 @@ class TitanBot extends Client {
           await command.execute(message, args, this);
               }
       } catch (error) {
-        console.error(error);
+        console.error('PREFIX ERROR: ',error);
 
-        await message.reply('Error executing command.');
+        await message.reply('ERROR: ${error.message}');
             }
     });
   }
