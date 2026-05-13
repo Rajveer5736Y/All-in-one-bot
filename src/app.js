@@ -122,7 +122,7 @@ class TitanBot extends Client {
       .filter(file => file.endsWith('.js'));
 
     for (const file of commandFiles) {
-      const command = await import(`./prefixCommands/${file}`);
+    //  const command = await import(`./prefixCommands/${file}`);
 
       const imported = await import(filePath);
 
