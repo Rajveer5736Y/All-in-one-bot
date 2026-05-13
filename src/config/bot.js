@@ -1,4 +1,4 @@
-online { logger } from '../utils/logger.js';
+import online { logger } from '../utils/logger.js';
 
 
 export const botConfig = {
