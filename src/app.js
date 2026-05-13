@@ -270,11 +270,19 @@ class TitanBot extends Client {
 
       const commandName = args.shift().toLowerCase();
 
-      const command = [...this.commands.values()].find(
+      const slashCommand = [...this.commands.values()].find(
         cmd => cmd.data?.name === commandName
       );
+
+      const prefixCommand = this.prefixCommands.get(commandName);
+
+      const command = slashCommand || prefixCommand;
+
       console.log("Prefix command:", commandName);
-      console.log("Found:", command?.data?.name);
+      console.log(
+        "Found:",
+        command?.data?.name || command?.name
+      );
 
       if (!command) return;
 
@@ -386,7 +394,7 @@ class TitanBot extends Client {
       } catch (error) {
         console.error('PREFIX ERROR: ',error);
 
-        await message.reply('ERROR: ${error.message}');
+        await message.reply(`ERROR: ${error.message}`);
             }
     });
   }
