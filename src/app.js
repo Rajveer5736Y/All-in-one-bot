@@ -259,7 +259,7 @@ class TitanBot extends Client {
     this.on('messageCreate', async (message) => {
       if (message.author.bot) return;
 
-      const prefix = '!';
+      const prefix = '+';
 
       if (!message.content.startsWith(prefix)) return;
 
