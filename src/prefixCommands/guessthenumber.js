@@ -24,15 +24,19 @@ export default {
     const winningNumber =
       Math.floor(Math.random() * (max - min + 1)) + min;
     try {
-        await message.author.send(
-        `🎯 The chosen number is: ${chosenNumber}`
+
+         const dmChannel = await message.author.createDM();
+
+         await dmChannel.send(
+             `🎯 The chosen number is: ${chosenNumber}`
         );
     } catch (err) {
-        await message.reply(
-        '❌ I could not DM you. Please enable DMs and try again.'
+         console.error(err);
+
+         return message.reply(
+        '❌ I could not DM you. Make sure DMs are enabled.'
         );
-        return;
-    }
+}
 
     const channel = message.channel;
 
