@@ -23,6 +23,16 @@ export default {
 
     const winningNumber =
       Math.floor(Math.random() * (max - min + 1)) + min;
+    try {
+        await message.author.send(
+        `🎯 The chosen number is: ${chosenNumber}`
+        );
+    } catch (err) {
+        await message.reply(
+        '❌ I could not DM you. Please enable DMs and try again.'
+        );
+        return;
+    }
 
     const channel = message.channel;
 
