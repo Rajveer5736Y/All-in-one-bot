@@ -124,7 +124,11 @@ class TitanBot extends Client {
     for (const file of commandFiles) {
       const command = await import(`./prefixCommands/${file}`);
 
-      this.prefixCommands.set(command.default.name, command.default);
+      const imported = await import(filePath);
+
+      const command = imported.default;
+
+      this.prefixCommands.set(command.name, command);
     }
   }
   startWebServer() {
